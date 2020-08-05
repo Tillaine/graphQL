@@ -5,7 +5,7 @@ const users = [
       "username": "Bret",
       "email": "Sincere@april.biz",
       "phone": "1-770-736-8031 x56442",
-      "website": "hildegard.org",
+      "website": "hildegard.org"
     },
     {
       "id": 2,
@@ -13,7 +13,7 @@ const users = [
       "username": "Antonette",
       "email": "Shanna@melissa.tv",
       "phone": "010-692-6593 x09125",
-      "website": "anastasia.net",
+      "website": "anastasia.net"
     },
     {
       "id": 3,
@@ -21,7 +21,7 @@ const users = [
       "username": "Samantha",
       "email": "Nathan@yesenia.net",
       "phone": "1-463-123-4447",
-      "website": "ramiro.info",
+      "website": "ramiro.info"
     },
     {
       "id": 4,

@@ -8,7 +8,7 @@ const {
     GraphQLList,
     GraphQLNonNull,
 } = require('graphql');
-const newComments = [];
+const id = 203;
 
 
 // Root Query
@@ -19,6 +19,28 @@ const commentType = new GraphQLObjectType({
         id: {type: GraphQLInt},
         body: {type: GraphQLString},
         name: {type: GraphQLString},
+        email: {type: GraphQLString},
+        post: {type: GraphQLString},
+    })
+})
+
+const userAddressType = new GraphQLObjectType({
+    name: "Address",
+    fields: () => ({
+        street: {type: GraphQLString},
+        suite: {type: GraphQLString},
+        city: {type: GraphQLString},
+        zipcode: {type: GraphQLString},
+    })
+})
+
+const postType = new GraphQLObjectType({
+    name: "Post",
+    fields: () => ({
+        id: {type: GraphQLInt},
+        body: {type: GraphQLString},
+        title: {type: GraphQLString},
+        userId: {type: GraphQLString},
     })
 })
 
@@ -45,7 +67,6 @@ const RootQuery = new GraphQLObjectType({
             resolve(parentValue, args){
                 return axios.get(`https://jsonplaceholder.typicode.com/users/${args.id}` )
                 .then(res => {
-                    console.log(res.data)
                     return res.data
                 })
             }
@@ -59,8 +80,32 @@ const RootQuery = new GraphQLObjectType({
                 })
             }
         }, 
-        comments: {
+        comment: {
             type: new GraphQLList(commentType),
+            args:{
+                id:{type: GraphQLInt}
+            }, 
+            resolve(parentValue, args) {
+                return axios.get(`https://jsonplaceholder.typicode.com/comments/${args.id}` )
+                .then(res => {
+                    return res.data
+                })
+            }
+        }, 
+        posts: {
+            type: new GraphQLList(postType), 
+            resolve(parentVaules, args){
+                return axios.get(`https://jsonplaceholder.typicode.com/posts/` )
+                .then(res => {
+                    return res.data
+                })
+            }
+        }, 
+        postComments: {
+            type: new GraphQLList(commentType),
+            args:{
+                id:{type: GraphQLInt}
+            }, 
             resolve(parentValue, args) {
                 return axios.get(`https://jsonplaceholder.typicode.com/comments/` )
                 .then(res => {
@@ -74,22 +119,29 @@ const RootQuery = new GraphQLObjectType({
 const mutation = new GraphQLObjectType({
     name: 'Mutation', 
     fields: {
-        addUser: {
+        updatePost: {
+            type: postType,
+            args:{
+                id: {type: GraphQLInt},
+                body: {type: GraphQLString},
+                title: {type: GraphQLString},
+                postId: {type: new GraphQLNonNull(GraphQLInt)}
+            },
+            resolve(parentValue, args){
+                const postObj = args;
+                delete postObj.postId;
+                return axios.patch(`https://jsonplaceholder.typicode.com/posts/${args.postId}`, postObj)
+                .then(res => res.data)
+            }
+        },
+        deletePost: {
             type: userType,
             args:{
                 id: {type: new GraphQLNonNull(GraphQLInt)},
-                body: {type: new GraphQLNonNull(GraphQLString)},
-                name: {type: new GraphQLNonNull(GraphQLString)}
             },
             resolve(parentValue, args){
-                commentObj = {
-                    id: args.id,
-                    body: args.body,
-                    name: args.name
-                }
-                newComments.push(commentObj)
-                console.log(newComments)
-                return newComments
+                return axios.delete(`https://jsonplaceholder.typicode.com/posts/${args.id}`)
+                .then(res => res.data)
             }
         }
     }
