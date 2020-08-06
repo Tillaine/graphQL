@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { useQuery, gql } from '@apollo/client';
-import Post from './Post.js'
+import PostItem from './PostItem.js'
 
 const POSTS_QUERY = gql`
     query PostQuery {
@@ -24,7 +24,7 @@ const Posts = () => {
                 {
                 data.posts.map(post => {
                 return (
-                    <Post key={post.id} post={post}/>
+                    <PostItem key={post.id} post={post}/>
                 )
                 })
                 }
