@@ -2,6 +2,7 @@
 ## technology used
 - React
 - Express
+- NodeJS
 - GraphQL
 - React Hooks
 - React Router
@@ -17,3 +18,4 @@ User Address added to User Type
 Comment Page
 Create Update Form and connect to API
 Additional styling 
+
